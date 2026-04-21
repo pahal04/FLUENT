@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    container_name: my_project_db
+    environment:
+      POSTGRES_USER: student
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: projectdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  backend:
+    build: ./backend
+    container_name: fluent_backend
+    environment:
+      DB_HOST: db
+      DB_USER: student
+      DB_PASSWORD: password
+      DB_NAME: projectdb
+      PORT: 3000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    volumes:
+      - ./backend:/app
+      - ./frontend:/app/frontend
+      - /app/node_modules
+
+volumes:
+  postgres_data:

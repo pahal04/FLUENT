@@ -4,6 +4,7 @@
 var express = require('express');
 var cors = require('cors');
 var path = require('path');
+var fs = require('fs');
 
 var authRoutes = require('./routes/auth');
 var languageRoutes = require('./routes/languages');
@@ -17,8 +18,11 @@ var PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-// frontend folder is one level up from backend
+// locally the frontend is one level up, but inside docker it's inside /app
 var frontendPath = path.join(__dirname, '../frontend');
+if (!fs.existsSync(frontendPath)) {
+  frontendPath = path.join(__dirname, 'frontend');
+}
 app.use(express.static(frontendPath));
 
 app.use('/api/auth', authRoutes);

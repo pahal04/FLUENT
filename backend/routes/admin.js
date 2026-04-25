@@ -80,4 +80,33 @@ router.post('/vocabulary', async function(req, res) {
   }
 });
 
+// delete a scenario by id (also deletes its vocab)
+router.delete('/scenarios/:id', async function(req, res) {
+  var id = req.params.id;
+
+  try {
+    await db.query('DELETE FROM vocabulary WHERE scenario_id = $1', [id]);
+    await db.query('DELETE FROM lesson_completions WHERE scenario_id = $1', [id]);
+    await db.query('DELETE FROM confidence_feedback WHERE scenario_id = $1', [id]);
+    await db.query('DELETE FROM scenarios WHERE scenario_id = $1', [id]);
+    res.json({ message: 'Scenario deleted!' });
+  } catch (err) {
+    console.log('delete scenario error:', err);
+    res.status(500).json({ error: 'Could not delete scenario.' });
+  }
+});
+
+// get all scenarios (for the manage tab)
+router.get('/scenarios', async function(req, res) {
+  try {
+    var result = await db.query(
+      'SELECT s.scenario_id, s.title, s.difficulty, l.lang_name FROM scenarios s JOIN languages l ON s.language_id = l.language_id ORDER BY l.lang_name, s.title'
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.log('error getting scenarios:', err);
+    res.status(500).json({ error: 'Could not fetch scenarios.' });
+  }
+});
+
 module.exports = router;

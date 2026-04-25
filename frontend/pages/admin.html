@@ -83,6 +83,7 @@
       <button class="tab-btn active" onclick="showTab('stats', this)">Usage Stats</button>
       <button class="tab-btn" onclick="showTab('add-scenario', this)">Add Scenario</button>
       <button class="tab-btn" onclick="showTab('add-vocab', this)">Add Vocabulary</button>
+      <button class="tab-btn" onclick="showTab('manage', this); loadManageScenarios();">Manage Scenarios</button>
     </div>
 
     <!-- STATS TAB -->
@@ -163,6 +164,13 @@
 
         <button class="btn btn-primary" onclick="addVocab()">Add Vocabulary</button>
       </div>
+    </div>
+
+    <!-- MANAGE SCENARIOS TAB -->
+    <div id="tab-manage" class="tab-content">
+      <h3 class="section-title">Manage Scenarios</h3>
+      <div id="manage-msg" class="msg hidden"></div>
+      <div id="manage-table"></div>
     </div>
 
   </div>
@@ -320,6 +328,58 @@
 
       } catch (err) {
         showMsg('vocab-msg', 'Server error.', 'error');
+      }
+    }
+    async function loadManageScenarios() {
+      document.getElementById('manage-table').innerHTML = '<p>Loading...</p>';
+
+      try {
+        var res = await fetch(API + '/admin/scenarios');
+        var scenarios = await res.json();
+
+        if (scenarios.length === 0) {
+          document.getElementById('manage-table').innerHTML = '<p style="color: var(--gray);">No scenarios found.</p>';
+          return;
+        }
+
+        var html = '<table class="data-table"><thead><tr><th>ID</th><th>Language</th><th>Title</th><th>Difficulty</th><th></th></tr></thead><tbody>';
+        for (var i = 0; i < scenarios.length; i++) {
+          var s = scenarios[i];
+          html += '<tr>';
+          html += '<td>' + s.scenario_id + '</td>';
+          html += '<td>' + s.lang_name + '</td>';
+          html += '<td>' + s.title + '</td>';
+          html += '<td>' + s.difficulty + '</td>';
+          html += '<td><button onclick="deleteScenario(' + s.scenario_id + ', \'' + s.title + '\')" style="background: var(--error); color: white; border: none; padding: 0.3rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.82rem;">Delete</button></td>';
+          html += '</tr>';
+        }
+        html += '</tbody></table>';
+        document.getElementById('manage-table').innerHTML = html;
+
+      } catch (err) {
+        document.getElementById('manage-table').innerHTML = '<p>Could not load scenarios.</p>';
+      }
+    }
+
+    async function deleteScenario(id, title) {
+      if (!confirm('Delete "' + title + '"? This will also remove its vocabulary and completion records.')) {
+        return;
+      }
+
+      try {
+        var res = await fetch(API + '/admin/scenarios/' + id, { method: 'DELETE' });
+        var data = await res.json();
+
+        if (!res.ok) {
+          showMsg('manage-msg', data.error || 'Could not delete.', 'error');
+          return;
+        }
+
+        showMsg('manage-msg', '"' + title + '" was deleted.', 'success');
+        loadManageScenarios();
+
+      } catch (err) {
+        showMsg('manage-msg', 'Server error.', 'error');
       }
     }
   </script>

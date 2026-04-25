@@ -24,30 +24,56 @@
 
   <div class="container">
     <div class="page-header">
-      <h2>Browse Scenarios</h2>
-      <p>Select a language to get started.</p>
+      <h2 id="page-title">Browse Scenarios</h2>
+      <p id="page-subtitle">Click a language below to see its scenarios.</p>
     </div>
 
-    <!-- TODO: load language cards from API -->
-    <div id="lang-grid" class="lang-grid">
-      <p style="color: var(--gray);">Loading languages...</p>
-    </div>
+    <!-- language cards load here -->
+    <div id="lang-grid" class="lang-grid"></div>
 
-    <!-- TODO: show scenarios for selected language -->
-    <div id="scenario-grid" class="grid-3" style="margin-top: 2rem;">
-    </div>
+    <!-- scenario cards load here after a language is selected -->
+    <div id="scenario-grid" class="grid-3"></div>
   </div>
 
   <footer>
-    <p>FLUENT &copy; 2026 · IS 436 · UMBC</p>
+    <p>FLUENT &copy; 2026 &middot; IS 436 &middot; UMBC</p>
   </footer>
 
   <script src="../js/app.js"></script>
   <script>
-    // TODO: wire up language selection and scenario loading
     document.addEventListener('DOMContentLoaded', function() {
-      console.log('languages page loaded');
+      // check if a language was pre-selected (coming from homepage)
+      var params = new URLSearchParams(window.location.search);
+      var langId = params.get('lang_id');
+      var langName = params.get('lang_name');
+
+      loadLanguages('lang-grid');
+
+      if (langId && langName) {
+        // update page title and load that language's scenarios right away
+        document.getElementById('page-title').textContent = langName + ' Scenarios';
+        document.getElementById('page-subtitle').textContent = 'Practice real-world conversations in ' + langName + '.';
+        loadScenarios('scenario-grid', langId);
+
+        // highlight the selected language card after cards load
+        setTimeout(function() {
+          var card = document.querySelector('.lang-card[data-id="' + langId + '"]');
+          if (card) card.classList.add('selected');
+        }, 400);
+      } else {
+        // no language selected yet - load all scenarios
+        loadScenarios('scenario-grid', null);
+      }
     });
+
+    // override selectLanguage so clicking a card also updates the heading
+    var originalSelectLanguage = selectLanguage;
+    selectLanguage = function(card, langId, langName) {
+      originalSelectLanguage(card, langId, langName);
+      document.getElementById('page-title').textContent = langName + ' Scenarios';
+      document.getElementById('page-subtitle').textContent = 'Practice real-world conversations in ' + langName + '.';
+      history.pushState({}, '', '?lang_id=' + langId + '&lang_name=' + langName);
+    };
   </script>
 
 </body>

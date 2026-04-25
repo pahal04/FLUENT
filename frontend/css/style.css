@@ -250,6 +250,11 @@ nav {
   color: #d35400;
 }
 
+.difficulty-badge.advanced {
+  background: #fde8e8;
+  color: #c0392b;
+}
+
 /* ===== FORMS ===== */
 .form-group {
   margin-bottom: 1.1rem;

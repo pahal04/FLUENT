@@ -5,6 +5,52 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Scenario - FLUENT</title>
   <link rel="stylesheet" href="../css/style.css" />
+  <style>
+    .scenario-banner {
+      background: var(--brown);
+      color: var(--white);
+      padding: 2.5rem 0;
+    }
+    .scenario-banner .lang-badge {
+      background: var(--teal);
+      color: white;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      display: inline-block;
+      margin-bottom: 0.75rem;
+    }
+    .scenario-banner h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+    .scenario-banner p {
+      color: var(--tan);
+    }
+    .complete-box {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-top: 2rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .complete-box h3 {
+      font-family: 'DM Serif Display', serif;
+      color: var(--brown);
+      margin-bottom: 0.25rem;
+    }
+    .complete-box p {
+      font-size: 0.88rem;
+      color: var(--gray);
+    }
+  </style>
 </head>
 <body>
 
@@ -22,16 +68,142 @@
     </div>
   </nav>
 
-  <div class="container" style="margin-top: 2rem;">
-    <p style="color: var(--gray);">Scenario page - coming soon</p>
-    <!-- TODO: build out scenario detail page -->
+  <!-- scenario title banner - filled in by JS below -->
+  <div class="scenario-banner">
+    <div class="container">
+      <div id="scenario-header">
+        <p style="color: var(--tan);">Loading scenario...</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <div class="page-header">
+      <h2>Vocabulary &amp; Phrases</h2>
+      <p>Study these words and phrases before practicing.</p>
+    </div>
+
+    <!-- vocab table goes here -->
+    <div id="vocab-section">
+      <p>Loading...</p>
+    </div>
+
+    <!-- mark complete button (hidden until scenario loads) -->
+    <div id="complete-section" class="complete-box hidden">
+      <div>
+        <h3>Done reviewing?</h3>
+        <p>Mark this scenario complete to save your progress.</p>
+      </div>
+      <button class="btn btn-primary" onclick="handleComplete()">Mark as Complete</button>
+    </div>
+
+    <!-- confidence rating (shows after marking complete) -->
+    <div id="feedback-section" class="confidence-section hidden" style="margin-bottom: 3rem;">
+      <h3>How did that feel?</h3>
+      <p style="font-size: 0.9rem; color: var(--gray); margin-top: 0.3rem;">
+        How confident would you feel using this in a real situation?
+      </p>
+      <div id="star-rating" class="rating-stars"></div>
+      <div class="form-group" style="margin-top: 0.5rem;">
+        <label for="feedback-comments">Any notes? (optional)</label>
+        <textarea id="feedback-comments" rows="2" placeholder="e.g. I struggled with the pronunciation..."></textarea>
+      </div>
+      <button class="btn btn-secondary" onclick="handleFeedback()">Submit Feedback</button>
+      <div id="feedback-msg" class="msg hidden" style="margin-top: 0.75rem;"></div>
+    </div>
+
   </div>
 
   <footer>
-    <p>FLUENT &copy; 2026 · IS 436 · UMBC</p>
+    <p>FLUENT &copy; 2026 &middot; IS 436 &middot; UMBC</p>
   </footer>
 
   <script src="../js/app.js"></script>
+  <script>
+    var currentScenarioId = null;
+
+    document.addEventListener('DOMContentLoaded', async function() {
+      var params = new URLSearchParams(window.location.search);
+      var id = params.get('id');
+
+      if (!id) {
+        document.getElementById('scenario-header').innerHTML = '<p>No scenario selected.</p>';
+        return;
+      }
+
+      currentScenarioId = id;
+
+      var data = await loadScenario(id);
+
+      if (!data) {
+        document.getElementById('scenario-header').innerHTML = '<p>Could not load scenario. Is the server running?</p>';
+        return;
+      }
+
+      var scenario = data.scenario;
+      var vocabulary = data.vocabulary;
+
+      // update browser tab title
+      document.title = scenario.title + ' - FLUENT';
+
+      // fill in the banner
+      document.getElementById('scenario-header').innerHTML =
+        '<span class="lang-badge">' + scenario.lang_name + '</span>' +
+        '<h1>' + scenario.title + '</h1>' +
+        '<p>' + (scenario.description || '') + '</p>' +
+        '<span class="difficulty-badge ' + scenario.difficulty.toLowerCase() + '" style="margin-top: 0.5rem; display: inline-block;">' + scenario.difficulty + '</span>';
+
+      // build the vocab table
+      if (vocabulary.length === 0) {
+        document.getElementById('vocab-section').innerHTML = '<p style="color: var(--gray);">No vocabulary added for this scenario yet.</p>';
+      } else {
+        var tableHTML = '<table class="vocab-table">';
+        tableHTML += '<thead><tr><th>Word / Phrase</th><th>Translation</th><th>Example</th></tr></thead>';
+        tableHTML += '<tbody>';
+        for (var i = 0; i < vocabulary.length; i++) {
+          var v = vocabulary[i];
+          tableHTML += '<tr>';
+          tableHTML += '<td><strong>' + v.phrase + '</strong></td>';
+          tableHTML += '<td>' + v.translation + '</td>';
+          tableHTML += '<td style="color: var(--gray); font-style: italic;">' + (v.example_usage || '-') + '</td>';
+          tableHTML += '</tr>';
+        }
+        tableHTML += '</tbody></table>';
+        document.getElementById('vocab-section').innerHTML = tableHTML;
+      }
+
+      // show the complete button
+      document.getElementById('complete-section').classList.remove('hidden');
+    });
+
+    async function handleComplete() {
+      var success = await markComplete(currentScenarioId);
+      if (success) {
+        document.getElementById('complete-section').classList.add('hidden');
+        document.getElementById('feedback-section').classList.remove('hidden');
+        initStarRating('star-rating');
+      }
+    }
+
+    async function handleFeedback() {
+      var rating = window.selectedRating;
+      if (!rating) {
+        showMsg('feedback-msg', 'Please select a star rating first!', 'error');
+        return;
+      }
+
+      var comments = document.getElementById('feedback-comments').value.trim();
+      var success = await submitFeedback(currentScenarioId, rating, comments);
+
+      if (success) {
+        showMsg('feedback-msg', 'Feedback saved! Great work!', 'success');
+        setTimeout(function() { window.location.href = 'languages.html'; }, 2000);
+      } else {
+        showMsg('feedback-msg', 'Could not save feedback.', 'error');
+      }
+    }
+  </script>
 
 </body>
 </html>

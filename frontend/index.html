@@ -34,20 +34,27 @@
   <div class="container">
     <div class="page-header">
       <h2>Pick a Language to Start</h2>
-      <p>We're still adding languages - check back soon!</p>
+      <p>Click any language to browse its scenarios.</p>
     </div>
 
-    <!-- TODO: load languages from API here -->
-    <div id="lang-grid" class="lang-grid">
-      <p style="color: var(--gray);">Languages coming soon...</p>
-    </div>
+    <div id="lang-grid" class="lang-grid"></div>
   </div>
 
   <footer>
-    <p>FLUENT &copy; 2026 · IS 436 · UMBC · Community Language Access Platform</p>
+    <p>FLUENT &copy; 2026 &middot; IS 436 &middot; UMBC &middot; Community Language Access Platform</p>
   </footer>
 
   <script src="js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      loadLanguages('lang-grid');
+
+      // on the homepage, clicking a language goes to the languages page filtered for that language
+      selectLanguage = function(card, langId, langName) {
+        window.location.href = 'pages/languages.html?lang_id=' + langId + '&lang_name=' + langName;
+      };
+    });
+  </script>
 
 </body>
 </html>

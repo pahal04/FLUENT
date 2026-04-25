@@ -5,6 +5,58 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin - FLUENT</title>
   <link rel="stylesheet" href="../css/style.css" />
+  <style>
+    .admin-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+      border-bottom: 2px solid #eee;
+    }
+    .tab-btn {
+      padding: 0.6rem 1.2rem;
+      background: none;
+      border: none;
+      border-bottom: 3px solid transparent;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--gray);
+      margin-bottom: -2px;
+    }
+    .tab-btn.active {
+      color: var(--teal);
+      border-bottom-color: var(--teal);
+    }
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    .section-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.3rem;
+      color: var(--brown);
+      margin-bottom: 1rem;
+    }
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+    table.data-table th {
+      background: var(--light-teal);
+      color: var(--brown);
+      padding: 0.65rem 1rem;
+      text-align: left;
+      font-weight: 600;
+    }
+    table.data-table td {
+      padding: 0.65rem 1rem;
+      border-bottom: 1px solid #eee;
+    }
+  </style>
 </head>
 <body>
 
@@ -18,12 +70,259 @@
     </div>
   </nav>
 
-  <div class="container" style="margin-top: 2rem;">
-    <h2>Admin</h2>
-    <p style="color: var(--gray);">Not started yet - will add stats and content management here</p>
+  <div style="background: var(--brown); padding: 2rem 0; margin-bottom: 0;">
+    <div class="container">
+      <h1 style="font-family: 'DM Serif Display', serif; font-size: 1.8rem; color: var(--teal);">Admin Dashboard</h1>
+      <p style="color: var(--tan); font-size: 0.9rem; margin-top: 0.3rem;">Manage content and monitor platform activity.</p>
+    </div>
   </div>
 
+  <div class="container" style="margin-top: 2rem;">
+
+    <div class="admin-tabs">
+      <button class="tab-btn active" onclick="showTab('stats', this)">Usage Stats</button>
+      <button class="tab-btn" onclick="showTab('add-scenario', this)">Add Scenario</button>
+      <button class="tab-btn" onclick="showTab('add-vocab', this)">Add Vocabulary</button>
+    </div>
+
+    <!-- STATS TAB -->
+    <div id="tab-stats" class="tab-content active">
+      <div id="stats-grid" class="stats-grid">
+        <p>Loading stats...</p>
+      </div>
+
+      <h3 class="section-title">Most Popular Scenarios</h3>
+      <div id="popular-table" style="margin-bottom: 2rem;"></div>
+
+      <h3 class="section-title">Completions by Language</h3>
+      <div id="language-table" style="margin-bottom: 3rem;"></div>
+    </div>
+
+    <!-- ADD SCENARIO TAB -->
+    <div id="tab-add-scenario" class="tab-content">
+      <h3 class="section-title">Add a New Scenario</h3>
+      <div class="card" style="max-width: 520px;">
+        <div id="scenario-msg" class="msg hidden"></div>
+
+        <div class="form-group">
+          <label>Language</label>
+          <select id="new-lang-id">
+            <option value="">Select a language...</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Scenario Title</label>
+          <input type="text" id="new-title" placeholder="e.g. At the Airport" />
+        </div>
+
+        <div class="form-group">
+          <label>Description</label>
+          <textarea id="new-description" rows="3" placeholder="What will users practice in this scenario?"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Difficulty</label>
+          <select id="new-difficulty">
+            <option value="Beginner">Beginner</option>
+            <option value="Intermediate">Intermediate</option>
+            <option value="Advanced">Advanced</option>
+          </select>
+        </div>
+
+        <button class="btn btn-primary" onclick="addScenario()">Add Scenario</button>
+      </div>
+    </div>
+
+    <!-- ADD VOCAB TAB -->
+    <div id="tab-add-vocab" class="tab-content">
+      <h3 class="section-title">Add Vocabulary to a Scenario</h3>
+      <div class="card" style="max-width: 520px;">
+        <div id="vocab-msg" class="msg hidden"></div>
+
+        <div class="form-group">
+          <label>Scenario ID</label>
+          <input type="number" id="vocab-scenario-id" placeholder="Enter the scenario ID number" />
+          <small style="color: var(--gray); font-size: 0.8rem;">You can find scenario IDs in the database or from the stats page.</small>
+        </div>
+
+        <div class="form-group">
+          <label>Word / Phrase (in target language)</label>
+          <input type="text" id="vocab-word" placeholder="e.g. Namaste" />
+        </div>
+
+        <div class="form-group">
+          <label>Translation (in English)</label>
+          <input type="text" id="vocab-translation" placeholder="e.g. Hello / Greetings" />
+        </div>
+
+        <div class="form-group">
+          <label>Example Usage (optional)</label>
+          <textarea id="vocab-example" rows="2" placeholder="e.g. Namaste, aap kaise hain? - Hello, how are you?"></textarea>
+        </div>
+
+        <button class="btn btn-primary" onclick="addVocab()">Add Vocabulary</button>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <p>FLUENT Admin &copy; 2026 &middot; IS 436 &middot; UMBC</p>
+  </footer>
+
   <script src="../js/app.js"></script>
+  <script>
+    // switch between tabs
+    function showTab(name, clickedBtn) {
+      // hide all tab content
+      var tabs = document.querySelectorAll('.tab-content');
+      for (var i = 0; i < tabs.length; i++) {
+        tabs[i].classList.remove('active');
+      }
+      // remove active from all buttons
+      var btns = document.querySelectorAll('.tab-btn');
+      for (var i = 0; i < btns.length; i++) {
+        btns[i].classList.remove('active');
+      }
+      // show selected tab and highlight button
+      document.getElementById('tab-' + name).classList.add('active');
+      clickedBtn.classList.add('active');
+    }
+
+    // load stats and language dropdown when the page opens
+    document.addEventListener('DOMContentLoaded', function() {
+      loadStats();
+      loadLanguageDropdown();
+    });
+
+    async function loadStats() {
+      try {
+        var res = await fetch(API + '/admin/stats');
+        var stats = await res.json();
+
+        // render the stat cards
+        document.getElementById('stats-grid').innerHTML =
+          '<div class="stat-card"><div class="number">' + stats.total_users + '</div><div class="label">Total Users</div></div>' +
+          '<div class="stat-card"><div class="number">' + stats.total_completions + '</div><div class="label">Lesson Completions</div></div>' +
+          '<div class="stat-card"><div class="number">' + stats.total_feedback + '</div><div class="label">Feedback Submitted</div></div>' +
+          '<div class="stat-card" style="border-top-color: var(--orange);"><div class="number">' + (stats.avg_confidence_rating || '-') + '</div><div class="label">Avg. Confidence Rating</div></div>';
+
+        // popular scenarios table
+        if (stats.popular_scenarios.length > 0) {
+          var pHTML = '<table class="data-table"><thead><tr><th>Scenario</th><th>Language</th><th>Completions</th></tr></thead><tbody>';
+          for (var i = 0; i < stats.popular_scenarios.length; i++) {
+            var s = stats.popular_scenarios[i];
+            pHTML += '<tr><td>' + s.title + '</td><td>' + s.lang_name + '</td><td><strong>' + s.completions + '</strong></td></tr>';
+          }
+          pHTML += '</tbody></table>';
+          document.getElementById('popular-table').innerHTML = pHTML;
+        } else {
+          document.getElementById('popular-table').innerHTML = '<p style="color: var(--gray);">No completions yet.</p>';
+        }
+
+        // completions by language table
+        if (stats.completions_by_language.length > 0) {
+          var lHTML = '<table class="data-table"><thead><tr><th>Language</th><th>Total Completions</th></tr></thead><tbody>';
+          for (var i = 0; i < stats.completions_by_language.length; i++) {
+            var l = stats.completions_by_language[i];
+            lHTML += '<tr><td>' + l.lang_name + '</td><td><strong>' + l.completions + '</strong></td></tr>';
+          }
+          lHTML += '</tbody></table>';
+          document.getElementById('language-table').innerHTML = lHTML;
+        } else {
+          document.getElementById('language-table').innerHTML = '<p style="color: var(--gray);">No data yet.</p>';
+        }
+
+      } catch (err) {
+        document.getElementById('stats-grid').innerHTML = '<p>Could not load stats. Is the backend running?</p>';
+      }
+    }
+
+    // fill the language dropdown in the add scenario form
+    async function loadLanguageDropdown() {
+      try {
+        var res = await fetch(API + '/languages');
+        var langs = await res.json();
+        var select = document.getElementById('new-lang-id');
+        for (var i = 0; i < langs.length; i++) {
+          var opt = document.createElement('option');
+          opt.value = langs[i].language_id;
+          opt.textContent = langs[i].lang_name;
+          select.appendChild(opt);
+        }
+      } catch (err) {
+        console.log('Could not load languages for dropdown.');
+      }
+    }
+
+    async function addScenario() {
+      var language_id = document.getElementById('new-lang-id').value;
+      var title = document.getElementById('new-title').value.trim();
+      var description = document.getElementById('new-description').value.trim();
+      var difficulty = document.getElementById('new-difficulty').value;
+
+      if (!language_id || !title) {
+        showMsg('scenario-msg', 'Language and title are required.', 'error');
+        return;
+      }
+
+      try {
+        var res = await fetch(API + '/admin/scenarios', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ language_id: language_id, title: title, description: description, difficulty: difficulty })
+        });
+        var data = await res.json();
+
+        if (!res.ok) {
+          showMsg('scenario-msg', data.error || 'Could not add scenario.', 'error');
+          return;
+        }
+
+        showMsg('scenario-msg', 'Scenario "' + title + '" added! (ID: ' + data.scenario.scenario_id + ')', 'success');
+        document.getElementById('new-title').value = '';
+        document.getElementById('new-description').value = '';
+
+      } catch (err) {
+        showMsg('scenario-msg', 'Server error.', 'error');
+      }
+    }
+
+    async function addVocab() {
+      var scenario_id = document.getElementById('vocab-scenario-id').value;
+      var word = document.getElementById('vocab-word').value.trim();
+      var translation = document.getElementById('vocab-translation').value.trim();
+      var example_phrase = document.getElementById('vocab-example').value.trim();
+
+      if (!scenario_id || !word || !translation) {
+        showMsg('vocab-msg', 'Scenario ID, word, and translation are required.', 'error');
+        return;
+      }
+
+      try {
+        var res = await fetch(API + '/admin/vocabulary', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ scenario_id: scenario_id, word: word, translation: translation, example_phrase: example_phrase })
+        });
+        var data = await res.json();
+
+        if (!res.ok) {
+          showMsg('vocab-msg', data.error || 'Could not add vocabulary.', 'error');
+          return;
+        }
+
+        showMsg('vocab-msg', '"' + word + '" added successfully!', 'success');
+        document.getElementById('vocab-word').value = '';
+        document.getElementById('vocab-translation').value = '';
+        document.getElementById('vocab-example').value = '';
+
+      } catch (err) {
+        showMsg('vocab-msg', 'Server error.', 'error');
+      }
+    }
+  </script>
 
 </body>
 </html>

@@ -25,13 +25,16 @@
     <h2>Create Account</h2>
     <p class="subtitle">Join FLUENT and start learning today.</p>
 
+    <!-- success/error message shows up here -->
     <div id="msg" class="msg hidden"></div>
 
+    <!-- optional field, no asterisk -->
     <div class="form-group">
       <label for="full_name">Full Name</label>
       <input type="text" id="full_name" placeholder="Your name" />
     </div>
 
+    <!-- required field -->
     <div class="form-group">
       <label for="username">Username <span style="color:var(--error)">*</span></label>
       <input type="text" id="username" placeholder="Pick a username" />
@@ -42,6 +45,7 @@
       <input type="email" id="email" placeholder="your@email.com" />
     </div>
 
+    <!-- optional field, no asterisk (null to backend if blank) -->
     <div class="form-group">
       <label for="birthday">Birthday</label>
       <input type="date" id="birthday" />
@@ -52,6 +56,7 @@
       <input type="password" id="password" placeholder="At least 6 characters" />
     </div>
 
+    <!-- calls handleRegister function when its clicked -->
     <button class="btn btn-primary" style="width:100%; margin-top: 0.5rem;" onclick="handleRegister()">Create Account</button>
 
     <p style="text-align:center; margin-top: 1rem; font-size: 0.88rem; color: var(--gray);">

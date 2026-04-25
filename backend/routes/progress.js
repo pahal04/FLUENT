@@ -1,13 +1,10 @@
-// routes/progress.js
-// handles lesson completions and confidence feedback
+// progress.js - tracks completed scenarios and confidence ratings
 
-const express = require('express');
-const router = express.Router();
-const db = require('../db');
+var express = require('express');
+var router = express.Router();
+var db = require('../db');
 
-// POST /api/progress/complete
-// saves when a user finishes a scenario
-router.post('/complete', async (req, res) => {
+router.post('/complete', async function(req, res) {
   var user_id = req.body.user_id;
   var scenario_id = req.body.scenario_id;
 
@@ -27,9 +24,7 @@ router.post('/complete', async (req, res) => {
   }
 });
 
-// POST /api/progress/feedback
-// saves star rating and comments after a scenario
-router.post('/feedback', async (req, res) => {
+router.post('/feedback', async function(req, res) {
   var user_id = req.body.user_id;
   var scenario_id = req.body.scenario_id;
   var rating = req.body.rating;
@@ -51,25 +46,19 @@ router.post('/feedback', async (req, res) => {
   }
 });
 
-// GET /api/progress/:user_id
-// returns all completed scenarios for a user with their ratings
-router.get('/:user_id', async (req, res) => {
+// get all completed scenarios for a user
+router.get('/:user_id', async function(req, res) {
   var user_id = req.params.user_id;
 
+  var query = 'SELECT lc.completion_id, lc.completed_at, s.scenario_id, s.title, s.difficulty, l.lang_name, cf.rating as confidence_rating ';
+  query += 'FROM lesson_completions lc ';
+  query += 'JOIN scenarios s ON lc.scenario_id = s.scenario_id ';
+  query += 'JOIN languages l ON s.language_id = l.language_id ';
+  query += 'LEFT JOIN confidence_feedback cf ON cf.user_id = lc.user_id AND cf.scenario_id = lc.scenario_id ';
+  query += 'WHERE lc.user_id = $1 ORDER BY lc.completed_at DESC';
+
   try {
-    var result = await db.query(
-      `SELECT lc.completion_id, lc.completed_at,
-              s.scenario_id, s.title, s.difficulty,
-              l.lang_name,
-              cf.rating as confidence_rating
-       FROM lesson_completions lc
-       JOIN scenarios s ON lc.scenario_id = s.scenario_id
-       JOIN languages l ON s.language_id = l.language_id
-       LEFT JOIN confidence_feedback cf ON cf.user_id = lc.user_id AND cf.scenario_id = lc.scenario_id
-       WHERE lc.user_id = $1
-       ORDER BY lc.completed_at DESC`,
-      [user_id]
-    );
+    var result = await db.query(query, [user_id]);
     res.json(result.rows);
   } catch (err) {
     console.log('progress fetch error:', err);

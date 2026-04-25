@@ -1,21 +1,18 @@
-// app.js - FLUENT frontend helpers
+// app.js - shared helper functions used across all pages
 // IS 436 Group Project
 
-const API = 'http://localhost:3000/api';
+var API = 'http://localhost:3000/api';
 
-// get the logged-in user from session storage (returns null if not logged in)
 function getUser() {
   var data = sessionStorage.getItem('fluent_user');
   if (data) return JSON.parse(data);
   return null;
 }
 
-// save the user object to session storage after login
 function setUser(user) {
   sessionStorage.setItem('fluent_user', JSON.stringify(user));
 }
 
-// show a message box inside an element (type is 'error' or 'success')
 function showMsg(elementId, text, type) {
   if (!type) type = 'error';
   var el = document.getElementById(elementId);
@@ -26,7 +23,7 @@ function showMsg(elementId, text, type) {
   setTimeout(function() { el.classList.add('hidden'); }, 5000);
 }
 
-// show/hide nav links based on whether user is logged in
+// update the nav bar depending on if someone is logged in
 function updateNav() {
   var user = getUser();
   if (user) {
@@ -45,7 +42,6 @@ function updateNav() {
   }
 }
 
-// load language cards from the API and put them in a container
 async function loadLanguages(containerId) {
   var container = document.getElementById(containerId);
   container.innerHTML = '<p>Loading languages...</p>';
@@ -73,7 +69,6 @@ async function loadLanguages(containerId) {
   }
 }
 
-// called when user clicks a language card
 function selectLanguage(card, langId, langName) {
   // remove selected highlight from all cards
   var allCards = document.querySelectorAll('.lang-card');
@@ -87,7 +82,6 @@ function selectLanguage(card, langId, langName) {
   loadScenarios('scenario-grid', langId);
 }
 
-// fetch scenarios from the API and display them as cards
 async function loadScenarios(containerId, langId) {
   var container = document.getElementById(containerId);
   container.innerHTML = '<p>Loading scenarios...</p>';
@@ -125,7 +119,6 @@ async function loadScenarios(containerId, langId) {
   }
 }
 
-// fetch a single scenario with its vocab list
 async function loadScenario(id) {
   try {
     var res = await fetch(API + '/scenarios/' + id);
@@ -138,7 +131,6 @@ async function loadScenario(id) {
   }
 }
 
-// record that the current user completed a scenario
 async function markComplete(scenarioId) {
   var user = getUser();
   if (!user) {
@@ -166,7 +158,6 @@ async function markComplete(scenarioId) {
   }
 }
 
-// save a star rating and optional comments for a completed scenario
 async function submitFeedback(scenarioId, rating, comments) {
   var user = getUser();
   if (!user) return false;
@@ -187,8 +178,7 @@ async function submitFeedback(scenarioId, rating, comments) {
   }
 }
 
-// build clickable star buttons inside a container element
-// sets window.selectedRating when the user picks a star
+// build the star rating buttons
 function initStarRating(containerId) {
   var container = document.getElementById(containerId);
   var html = '';
@@ -199,7 +189,6 @@ function initStarRating(containerId) {
   window.selectedRating = null;
 }
 
-// highlight stars 1 through num when a star is clicked
 function selectStar(num) {
   window.selectedRating = num;
   for (var i = 1; i <= 5; i++) {

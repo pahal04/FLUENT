@@ -1,19 +1,15 @@
-// routes/languages.js
-// get all available languages
+// languages.js
 
-const express = require('express');
-const router = express.Router();
-const db = require('../db');
+var express = require('express');
+var router = express.Router();
+var db = require('../db');
 
-// GET /api/languages
-router.get('/', async (req, res) => {
+router.get('/', async function(req, res) {
   try {
-    const result = await db.query(
-      'SELECT * FROM languages ORDER BY lang_name'
-    );
+    var result = await db.query('SELECT * FROM languages ORDER BY lang_name');
     res.json(result.rows);
   } catch (err) {
-    console.error('Error fetching languages:', err);
+    console.log('error getting languages:', err);
     res.status(500).json({ error: 'Could not fetch languages.' });
   }
 });

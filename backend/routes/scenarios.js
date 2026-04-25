@@ -1,12 +1,12 @@
-// routes/scenarios.js
+// scenarios.js
 
-const express = require('express');
-const router = express.Router();
-const db = require('../db');
+var express = require('express');
+var router = express.Router();
+var db = require('../db');
 
-// GET /api/scenarios?language_id=1
-router.get('/', async (req, res) => {
-  const language_id = req.query.language_id;
+// get all scenarios, or filter by language if language_id is in the query
+router.get('/', async function(req, res) {
+  var language_id = req.query.language_id;
 
   try {
     var result;
@@ -29,8 +29,8 @@ router.get('/', async (req, res) => {
   }
 });
 
-// GET /api/scenarios/:id - get one scenario with its vocabulary list
-router.get('/:id', async (req, res) => {
+// get one scenario by id, also grab its vocab list
+router.get('/:id', async function(req, res) {
   var id = req.params.id;
 
   try {

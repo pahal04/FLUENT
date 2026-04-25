@@ -1,8 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(docker compose *)",
-      "Bash(curl -s http://localhost:3000/api/languages)"
-    ]
-  }
-}

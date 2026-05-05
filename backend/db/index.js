@@ -8,6 +8,7 @@ const pool = new Pool({
   password: process.env.DB_PASSWORD || 'password',
   database: process.env.DB_NAME || 'projectdb',
   port: 5432,
+  ssl: process.env.DB_HOST ? { rejectUnauthorized: false } : false,
 });
 
 // just a quick test to make sure we connected

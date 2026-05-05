@@ -1,7 +1,7 @@
 // app.js - shared helper functions used across all pages
 // IS 436 Group Project
 
-var API = 'http://localhost:3000/api';
+var API = '/api';
 
 function getUser() {
   var data = sessionStorage.getItem('fluent_user');

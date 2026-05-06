@@ -198,3 +198,111 @@ INSERT INTO vocabulary (scenario_id, phrase, translation, pronunciation, example
 (25, 'Namaste', 'Hello / Greetings', 'Nah-mas-tay', 'A respectful greeting used across India.'),
 (25, 'Mera naam... hai', 'My name is...', 'Meh-rah naam hai', 'Use this to introduce yourself in Hindi.'),
 (25, 'Aap kaise hain?', 'How are you? (formal)', 'Aap kai-seh hain', 'A polite way to ask how someone is doing.');
+
+-- Gujarati: Ordering Food at a Restaurant (scenario_id = 2)
+INSERT INTO vocabulary (scenario_id, phrase, translation, pronunciation, example_usage) VALUES
+(2, 'Mane meenu aapso?', 'Can I have the menu?', 'Mah-neh meh-noo aap-so', 'Ask the waiter for the menu when you sit down.'),
+(2, 'Mane aa joiyeh', 'I would like this one', 'Mah-neh aa joy-eh', 'Point to an item on the menu and say this to order.'),
+(2, 'Bill lavsho?', 'Can you bring the bill?', 'Bill lav-sho', 'Say this when you are ready to pay.');
+
+-- Gujarati: Meeting the Family (scenario_id = 3)
+INSERT INTO vocabulary (scenario_id, phrase, translation, pronunciation, example_usage) VALUES
+(3, 'Aa mara... che', 'This is my...', 'Aa mah-rah cheh', 'Use this to introduce a family member to someone.'),
+(3, 'Tame kya thi cho?', 'Where are you from?', 'Tah-meh kyah thee choh', 'Ask this to learn more about someone you are meeting.'),
+(3, 'Tamane malie ne khushi thayi', 'Nice to meet you', 'Tah-mah-neh mah-lee-neh khoo-shee thah-ee', 'Say this when meeting someone for the first time.');
+
+-- Nepali: Asking for Directions (scenario_id = 5)
+INSERT INTO vocabulary (scenario_id, phrase, translation, pronunciation, example_usage) VALUES
+(5, '... kata cha?', 'Where is...?', 'kah-tah cha', 'Ask this followed by a place name to find a location.'),
+(5, 'Sidha jaanus', 'Go straight', 'Seed-hah jaa-nus', 'A direction you might hear when asking how to get somewhere.'),
+(5, 'Kati tadha cha?', 'How far is it?', 'Kah-tee tah-dah cha', 'Ask this to get an idea of the distance to your destination.');
+
+-- Nepali: At the Market (scenario_id = 6)
+INSERT INTO vocabulary (scenario_id, phrase, translation, pronunciation, example_usage) VALUES
+(6, 'Yo kati parcha?', 'How much does this cost?', 'Yoh kah-tee par-cha', 'Ask the vendor for the price of any item.'),
+(6, 'Arko dekhaunos', 'Show me another one', 'Ar-ko deh-kow-nos', 'Use this when you want to see different options at a stall.'),
+(6, 'Thikai cha', 'That is fine / Okay', 'Tee-kai cha', 'Say this to agree on a price or confirm your purchase.');
+
+-- English: At the Doctor''s Office (scenario_id = 8)
+INSERT INTO vocabulary (scenario_id, phrase, translation, pronunciation, example_usage) VALUES
+(8, 'I have an appointment', 'I have an appointment', NULL, 'Say this at the front desk when you arrive at the clinic.'),
+(8, 'I have been feeling...', 'I have been feeling...', NULL, 'Start with this phrase to describe your symptoms to the doctor.'),
+(8, 'Can you repeat that, please?', 'Can you repeat that, please?', NULL, 'Ask the doctor or nurse to clarify if you did not understand something.');
+
+-- English: Using Public Transportation (scenario_id = 9)
+INSERT INTO vocabulary (scenario_id, phrase, translation, pronunciation, example_usage) VALUES
+(9, 'Does this bus go to...?', 'Does this bus go to...?', NULL, 'Ask the driver or another passenger before you board.'),
+(9, 'Where do I get off for...?', 'Where do I get off for...?', NULL, 'Ask this so you know which stop to exit at.'),
+(9, 'How much is the fare?', 'How much is the fare?', NULL, 'Ask before boarding so you have the right amount ready.');
+
+-- Chinese: Asking for Directions (scenario_id = 11)
+INSERT INTO vocabulary (scenario_id, phrase, translation, pronunciation, example_usage) VALUES
+(11, '...在哪里?', 'Where is...?', 'zai na li', 'Say the place name first, then this phrase to ask where it is.'),
+(11, '怎么走?', 'How do I get there?', 'Zen me zou', 'Ask this as a follow-up after learning where a place is.'),
+(11, '左转 / 右转', 'Turn left / Turn right', 'Zuo zhuan / You zhuan', 'Common directions you will hear when someone guides you.');
+
+-- Chinese: Shopping at a Market (scenario_id = 12)
+INSERT INTO vocabulary (scenario_id, phrase, translation, pronunciation, example_usage) VALUES
+(12, '多少钱?', 'How much is it?', 'Duo shao qian', 'Always ask this before buying anything at a market stall.'),
+(12, '太贵了', 'Too expensive', 'Tai gui le', 'Use this to signal you want to bargain for a lower price.'),
+(12, '便宜一点', 'A little cheaper, please', 'Pian yi yi dian', 'Ask for a small discount when the price feels too high.');
+
+-- Italian: Ordering at a Cafe (scenario_id = 14)
+INSERT INTO vocabulary (scenario_id, phrase, translation, pronunciation, example_usage) VALUES
+(14, 'Un caffè, per favore', 'A coffee, please', 'Oon kaf-feh, pehr fah-voh-reh', 'Order a standard Italian espresso with this phrase.'),
+(14, 'Vorrei un cornetto', 'I would like a croissant', 'Vor-ray oon kor-neh-toh', 'Order a pastry to pair with your morning coffee.'),
+(14, 'Il conto, per favore', 'The bill, please', 'Eel kon-toh, pehr fah-voh-reh', 'Ask for the check when you are ready to leave the cafe.');
+
+-- Italian: Checking into a Hotel (scenario_id = 15)
+INSERT INTO vocabulary (scenario_id, phrase, translation, pronunciation, example_usage) VALUES
+(15, 'Ho una prenotazione', 'I have a reservation', 'Oh oo-nah preh-noh-tah-tsyoh-neh', 'Say this at the front desk when you arrive at the hotel.'),
+(15, 'La chiave, per favore', 'The key, please', 'Lah kyah-veh, pehr fah-voh-reh', 'Ask the receptionist for your room key at check-in.'),
+(15, 'A che ora è il checkout?', 'What time is checkout?', 'Ah keh oh-rah eh eel chek-owt', 'Ask this when checking in so you can plan your departure.');
+
+-- Tagalog: Family Conversations (scenario_id = 17)
+INSERT INTO vocabulary (scenario_id, phrase, translation, pronunciation, example_usage) VALUES
+(17, 'Ito ang aking...', 'This is my...', 'Ee-toh ang ah-king', 'Use this to introduce a family member to someone new.'),
+(17, 'Mula saan kayo?', 'Where are you from?', 'Moo-lah sah-an kah-yo', 'Ask this to learn about a family member''s background.'),
+(17, 'Masaya akong makilala kayo', 'Nice to meet you', 'Mah-sah-yah ah-kong mah-kee-lah-lah kah-yo', 'Say this when meeting a family member for the first time.');
+
+-- Tagalog: Speaking at the Doctor (scenario_id = 18)
+INSERT INTO vocabulary (scenario_id, phrase, translation, pronunciation, example_usage) VALUES
+(18, 'Masakit ang aking...', 'My... hurts', 'Mah-sah-kit ang ah-king', 'Point to the area and say this to describe pain to a doctor.'),
+(18, 'Kailangan ko ng tulong', 'I need help', 'Kai-la-ngan ko nang too-long', 'Say this urgently if you need immediate medical assistance.'),
+(18, 'Mayroon ba kayong gamot?', 'Do you have medicine?', 'May-ro-on ba kah-yong gah-mot', 'Ask a doctor or pharmacist for medication.');
+
+-- Urdu: At the Restaurant (scenario_id = 20)
+INSERT INTO vocabulary (scenario_id, phrase, translation, pronunciation, example_usage) VALUES
+(20, 'Menu dikhayein', 'Please show me the menu', 'Meh-noo dee-khah-yen', 'Ask the waiter for the menu when you sit down.'),
+(20, 'Mujhe yeh chahiye', 'I would like this', 'Moo-jheh yeh chah-hee-yeh', 'Point to a menu item and say this to place your order.'),
+(20, 'Bill layen', 'Please bring the bill', 'Bill lah-yen', 'Say this to the waiter when you are ready to pay.');
+
+-- Urdu: Asking for Help (scenario_id = 21)
+INSERT INTO vocabulary (scenario_id, phrase, translation, pronunciation, example_usage) VALUES
+(21, 'Mujhe madad chahiye', 'I need help', 'Moo-jheh mah-dahd chah-hee-yeh', 'Use this in any situation where you need assistance.'),
+(21, 'Kya aap meri madad kar sakte hain?', 'Can you help me?', 'Kyah aap meh-ree mah-dahd kar sak-teh hain', 'A polite way to ask a stranger for help.'),
+(21, 'Main rasta bhool gaya', 'I am lost', 'Main ras-tah bhool gah-yah', 'Say this when you need someone to help you find your way.');
+
+-- Spanish: Checking into a Hotel (scenario_id = 23)
+INSERT INTO vocabulary (scenario_id, phrase, translation, pronunciation, example_usage) VALUES
+(23, 'Tengo una reservación', 'I have a reservation', 'Ten-go oo-nah reh-sehr-vah-syohn', 'Say this at the front desk when you arrive at the hotel.'),
+(23, '¿A qué hora es el checkout?', 'What time is checkout?', 'Ah keh oh-rah es el chek-owt', 'Ask this at check-in so you can plan your departure.'),
+(23, '¿Dónde está el ascensor?', 'Where is the elevator?', 'Don-deh es-tah el ah-sen-sor', 'Ask the front desk how to get to your floor.');
+
+-- Spanish: At the Grocery Store (scenario_id = 24)
+INSERT INTO vocabulary (scenario_id, phrase, translation, pronunciation, example_usage) VALUES
+(24, '¿Dónde están los...?', 'Where are the...?', 'Don-deh es-tahn los', 'Ask a store employee to help you find a product aisle.'),
+(24, '¿Cuánto cuesta esto?', 'How much does this cost?', 'Kwan-toh kwes-tah es-toh', 'Ask for the price of an item before putting it in your cart.'),
+(24, '¿Tienen una bolsa?', 'Do you have a bag?', 'Tye-nen oo-nah bol-sah', 'Ask the cashier for a shopping bag at checkout.');
+
+-- Hindi: Taking a Rickshaw or Taxi (scenario_id = 26)
+INSERT INTO vocabulary (scenario_id, phrase, translation, pronunciation, example_usage) VALUES
+(26, '... chalna hai', 'I need to go to...', 'chal-nah hai', 'Say your destination first, then this phrase to tell the driver where to go.'),
+(26, 'Kitna hoga?', 'How much will it cost?', 'Kit-nah ho-gah', 'Ask the driver for the fare before getting in.'),
+(26, 'Yahaan rok do', 'Stop here', 'Yah-haan rok do', 'Tell the driver to stop when you have reached your destination.');
+
+-- Hindi: Shopping at a Bazaar (scenario_id = 27)
+INSERT INTO vocabulary (scenario_id, phrase, translation, pronunciation, example_usage) VALUES
+(27, 'Kitne ka hai?', 'How much is this?', 'Kit-neh kah hai', 'Ask any vendor for the price of an item at the market.'),
+(27, 'Thoda kam karo', 'Lower the price a little', 'Tho-dah kam kah-ro', 'Use this to bargain with a vendor who quotes a high price.'),
+(27, 'Yeh le lunga', 'I will take this one', 'Yeh leh loon-gah', 'Say this when you have decided to buy something.');

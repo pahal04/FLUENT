@@ -201,15 +201,15 @@ INSERT INTO vocabulary (scenario_id, phrase, translation, pronunciation, example
 
 -- Gujarati: Ordering Food at a Restaurant (scenario_id = 2)
 INSERT INTO vocabulary (scenario_id, phrase, translation, pronunciation, example_usage) VALUES
-(2, 'Mane meenu aapso?', 'Can I have the menu?', 'Mah-neh meh-noo aap-so', 'Ask the waiter for the menu when you sit down.'),
+(2, 'Mane menu aapso?', 'Can I have the menu?', 'Mah-neh meh-noo aap-so', 'Ask the waiter for the menu when you sit down.'),
 (2, 'Mane aa joiyeh', 'I would like this one', 'Mah-neh aa joy-eh', 'Point to an item on the menu and say this to order.'),
-(2, 'Bill lavsho?', 'Can you bring the bill?', 'Bill lav-sho', 'Say this when you are ready to pay.');
+(2, 'Bill lavso?', 'Can you bring the bill?', 'Bill lav-sho', 'Say this when you are ready to pay.');
 
 -- Gujarati: Meeting the Family (scenario_id = 3)
 INSERT INTO vocabulary (scenario_id, phrase, translation, pronunciation, example_usage) VALUES
 (3, 'Aa mara... che', 'This is my...', 'Aa mah-rah cheh', 'Use this to introduce a family member to someone.'),
 (3, 'Tame kya thi cho?', 'Where are you from?', 'Tah-meh kyah thee choh', 'Ask this to learn more about someone you are meeting.'),
-(3, 'Tamane malie ne khushi thayi', 'Nice to meet you', 'Tah-mah-neh mah-lee-neh khoo-shee thah-ee', 'Say this when meeting someone for the first time.');
+(3, 'Tamne mali ne khushi thayi', 'Nice to meet you', 'Tah-mah-neh mah-lee-neh khoo-shee thah-ee', 'Say this when meeting someone for the first time.');
 
 -- Nepali: Asking for Directions (scenario_id = 5)
 INSERT INTO vocabulary (scenario_id, phrase, translation, pronunciation, example_usage) VALUES

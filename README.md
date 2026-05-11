@@ -266,7 +266,7 @@ The FLUENT application is containerized and will be published to DockerHub for t
 **DockerHub Image URL:**
 
 ```text
-PASTE DOCKERHUB IMAGE URL HERE
+https://hub.docker.com/repository/docker/pahaldave/fluent-app/tags
 ```
 
 Example format:
